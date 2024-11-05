@@ -768,3 +768,10 @@ def has_child_permission(
 
 def is_system_user(user: str | None = None) -> bool:
 	return frappe.get_cached_value("User", user or frappe.session.user, "user_type") == "System User"
+
+
+def _pop_debug_log() -> list[str]:
+	if log := getattr(frappe.local, "permission_debug_log", None):
+		del frappe.local.permission_debug_log
+		return log
+	return []
